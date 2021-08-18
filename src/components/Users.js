@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
@@ -13,7 +13,6 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
@@ -34,15 +33,96 @@ const styles = theme => ({
 const Users = (props) => {
   const { classes } = props;
 
+  const sortByFirstNameUp = 'sort-by-first-name-up';
+  const sortByFirstNameDown = 'sort-by-first-name-down';
+  const sortByLastNameUp = 'sort-by-last-name-up';
+  const sortByLastNameDown = 'sort-by-last-name-down';
+  const sortByPositionUp = 'sort-by-position-up';
+  const sortByPositionDown = 'sort-by-position-down';
+
+  let sortButtonColor = {
+    sortByFirstNameUp: 'primary',
+    sortByFirstNameDown: 'default',
+    sortByLastNameUp: 'default',
+    sortByLastNameDown: 'default',
+    sortByPositionUp: 'default',
+    sortByPositionDown: 'default'
+  }
+
+  const setDefaultColor = (obj) => {
+    for(let key in obj)
+      if(obj.hasOwnProperty(key))
+        obj[key] = 'default';
+  }
+
   const {users, deleteUser} = useUsersActions();
+
+  const [sortingBy, setSortingBy] = useState(sortByFirstNameUp);
+
+  const sortedUsers = useMemo(() => {
+    setDefaultColor(sortButtonColor);
+    switch(sortingBy) {
+      case sortByFirstNameUp : 
+        sortButtonColor.sortByFirstNameUp='primary';
+        return (
+          Object.values(users).sort((a, b) => {
+            if(a.firstName > b.firstName) return 1;
+            if(a.firstName < b.firstName) return -1;
+            return 0;
+          })
+        );
+      case sortByFirstNameDown :
+        sortButtonColor.sortByFirstNameDown='primary';
+        return (
+          Object.values(users).sort((a, b) => {
+            if(a.firstName < b.firstName) return 1;
+            if(a.firstName > b.firstName) return -1;
+            return 0;
+          })
+        );
+      case sortByLastNameUp :
+        sortButtonColor.sortByLastNameUp='primary';
+        return (
+          Object.values(users).sort((a, b) => {
+            if(a.lastName > b.lastName) return 1;
+            if(a.lastName < b.lastName) return -1;
+            return 0;
+          })
+        );
+      case sortByLastNameDown :
+        sortButtonColor.sortByLastNameDown='primary';
+        return (
+          Object.values(users).sort((a, b) => {
+            if(a.lastName < b.lastName) return 1;
+            if(a.lastName > b.lastName) return -1;
+            return 0;
+          })
+        );
+        case sortByPositionUp :
+          sortButtonColor.sortByPositionUp='primary';
+          return (
+            Object.values(users).sort((a, b) => {
+              if(a.position > b.position) return 1;
+              if(a.position < b.position) return -1;
+              return 0;
+            })
+          );
+      case sortByPositionDown :
+        sortButtonColor.sortByPositionDown='primary';
+        return (
+          Object.values(users).sort((a, b) => {
+            if(a.position < b.position) return 1;
+            if(a.position > b.position) return -1;
+            return 0;
+          })
+        );
+        default : return Object.values(users);
+    }
+  }, [sortingBy, users]);
 
   const handleDeleteButtonClick = (event) => {
     console.log('Deleted ID:' + event.currentTarget.value);
     deleteUser(event.currentTarget.value);
-  }
-
-  const handleSortButtonClick = (event) => {
-    console.log(event.currentTarget.value);
   }
 
   return (
@@ -55,11 +135,21 @@ const Users = (props) => {
               <span>First Name</span>
               <IconButton 
                 aria-label="sort" 
-                value="sort-by-first-name-down" 
+                value={sortByFirstNameUp} 
                 className={classes.margin} 
                 size="small"
-                style={{color: 'blue'}}
-                onClick={handleSortButtonClick}
+                color={sortButtonColor.sortByFirstNameUp}
+                onClick={() => setSortingBy(sortByFirstNameUp)}
+              >
+                <ArrowUpwardIcon fontSize="inherit" />
+              </IconButton>
+              <IconButton 
+                aria-label="sort" 
+                value={sortByFirstNameDown} 
+                className={classes.margin} 
+                size="small"
+                color={sortButtonColor.sortByFirstNameDown}
+                onClick={() => setSortingBy(sortByFirstNameDown)}
               >
                 <ArrowDownwardIcon fontSize="inherit" />
               </IconButton>
@@ -68,32 +158,64 @@ const Users = (props) => {
               <span>Last Name</span>
               <IconButton 
                 aria-label="sort" 
-                value="sort-by-first-name-up" 
+                value={sortByLastNameUp}
                 className={classes.margin} 
                 size="small"
-                style={{color: 'grey'}}
-                onClick={handleSortButtonClick}
+                color={sortButtonColor.sortByLastNameUp}
+                onClick={() => setSortingBy(sortByLastNameUp)}
               >
                 <ArrowUpwardIcon fontSize="inherit" />
               </IconButton>
+              <IconButton 
+                aria-label="sort" 
+                value={sortByLastNameDown} 
+                className={classes.margin} 
+                size="small"
+                color={sortButtonColor.sortByLastNameDown}
+                onClick={() => setSortingBy(sortByLastNameDown)}
+              >
+                <ArrowDownwardIcon fontSize="inherit" />
+              </IconButton>
             </TableCell>
-            <TableCell align="center">Position</TableCell>
+            <TableCell align="center">
+              <span>Position</span>
+              <IconButton 
+                aria-label="sort" 
+                value={sortByPositionUp}
+                className={classes.margin} 
+                size="small"
+                color={sortButtonColor.sortByPositionUp}
+                onClick={() => setSortingBy(sortByPositionUp)}
+              >
+                <ArrowUpwardIcon fontSize="inherit" />
+              </IconButton>
+              <IconButton 
+                aria-label="sort" 
+                value={sortByPositionDown} 
+                className={classes.margin} 
+                size="small"
+                color={sortButtonColor.sortByPositionDown}
+                onClick={() => setSortingBy(sortByPositionDown)}
+              >
+                <ArrowDownwardIcon fontSize="inherit" />
+              </IconButton>
+            </TableCell>
             <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {Object.keys(users).map((key) => (
-            <TableRow key={users[key].id}>
-              <TableCell align="center">{users[key].firstName}</TableCell>
-              <TableCell align="center">{users[key].lastName}</TableCell>
-              <TableCell align="center">{users[key].position}</TableCell>
+          {sortedUsers.map((user) => (
+            <TableRow key={user.id}>
+              <TableCell align="center">{user.firstName}</TableCell>
+              <TableCell align="center">{user.lastName}</TableCell>
+              <TableCell align="center">{user.position}</TableCell>
               <TableCell align="right">
-                <IconButton aria-label="edit" value={key}>
-                  <Link to={`/users/:${key}`} style={{ textDecoration: 'none'}}>
+                <IconButton aria-label="edit" value={user.id}>
+                  <Link to={`/users/:${user.id}`} style={{ textDecoration: 'none'}}>
                     <EditIcon />
                   </Link>
                 </IconButton>
-                <IconButton aria-label="delete" value={key} onClick={handleDeleteButtonClick}>
+                <IconButton aria-label="delete" value={user.id} onClick={handleDeleteButtonClick}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

@@ -2,7 +2,7 @@ import { useCallback, useContext } from "react";
 import { UsersContext } from "../context/UsersContext";
 
 const useUsersActions = () => {
-  const { context, setContext} = useContext(UsersContext);
+  const { context, setContext } = useContext(UsersContext);
 
   const addNewUser = useCallback((newUser) => {
     setContext((prevState) => {
