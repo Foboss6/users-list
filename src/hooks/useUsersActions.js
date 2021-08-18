@@ -28,24 +28,6 @@ const useUsersActions = () => {
       }
     });
   }, [setContext]);
-
-  // const deleteUser = (key) => {
-  //   delete context.users[key];
-  //   console.log(context.users[key]);
-  // }
-
-  const editUser = useCallback((key, user) => {
-    setContext((prevState) => {
-      delete prevState.users[user.id];
-      return {
-        ...prevState,
-        users: {
-          ...prevState.users,
-          [user.id]: user,
-        }
-      }
-    });
-  }, [setContext]);
   
   return {
     ...context,

@@ -14,6 +14,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 import useUsersActions from '../hooks/useUsersActions';
 
@@ -29,28 +31,19 @@ const styles = theme => ({
   },
 });
 
-function Users(props) {
+const Users = (props) => {
   const { classes } = props;
 
   const {users, deleteUser} = useUsersActions();
-
-  const handleButtonClick = () => {
-    console.log(users);
-
-    Object.keys(users).map((key, index) => {
-      console.log(users[key]);
-      console.log(key);
-    })
-  }
 
   const handleDeleteButtonClick = (event) => {
     console.log('Deleted ID:' + event.currentTarget.value);
     deleteUser(event.currentTarget.value);
   }
 
-  // const handleEditButtonClick = (event) => {
-  //   window.open('/users/:111111');
-  // }
+  const handleSortButtonClick = (event) => {
+    console.log(event.currentTarget.value);
+  }
 
   return (
     <>
@@ -58,8 +51,32 @@ function Users(props) {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell align="center">First Name</TableCell>
-            <TableCell align="center">Last Name</TableCell>
+            <TableCell align="center">
+              <span>First Name</span>
+              <IconButton 
+                aria-label="sort" 
+                value="sort-by-first-name-down" 
+                className={classes.margin} 
+                size="small"
+                style={{color: 'blue'}}
+                onClick={handleSortButtonClick}
+              >
+                <ArrowDownwardIcon fontSize="inherit" />
+              </IconButton>
+            </TableCell>
+            <TableCell align="center">
+              <span>Last Name</span>
+              <IconButton 
+                aria-label="sort" 
+                value="sort-by-first-name-up" 
+                className={classes.margin} 
+                size="small"
+                style={{color: 'grey'}}
+                onClick={handleSortButtonClick}
+              >
+                <ArrowUpwardIcon fontSize="inherit" />
+              </IconButton>
+            </TableCell>
             <TableCell align="center">Position</TableCell>
             <TableCell align="center"></TableCell>
           </TableRow>
@@ -86,7 +103,6 @@ function Users(props) {
       </Table>
     </Paper>
     <br/>
-    <Button variant="contained" onClick={handleButtonClick}>Confirm!</Button>
     <div>
       <Link to='/users/create'>Add new User</Link>
     </div>
