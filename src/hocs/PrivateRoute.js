@@ -1,14 +1,12 @@
 import React from 'react';
 import { Redirect, Route} from 'react-router-dom';
 
-const PrivateRoute = ({ children, ...props }) {
-  const loginData = {login: 'abcd', pass: '1234'};
-  const isLoggedIn = () => {
-    if(loginData.login === 'abcd' && loginData.pass === '1234')
-      return true;
-      else
-      return false;
-  }
+const PrivateRoute = ({ children, ...props }) => {
+  const loginData = {login: 'abcd1', pass: '1234'};
+
+  const isLoggedIn = ((loginData.login === 'abcd') && (loginData.pass === '1234')) ? true : false;
+
+  console.log('isLoggedIn = '+isLoggedIn);
 
   if(!loginData) return <div><h1>There are no login data</h1></div>
 
@@ -19,10 +17,12 @@ const PrivateRoute = ({ children, ...props }) {
         if(isLoggedIn) {
           return (children);
         }
-
-        <Redirect to='/login' />
+        
+        return (
+          <Redirect to='/login' />
+        )
       }}
-    ></Route>
+    />
   )
 }
 
