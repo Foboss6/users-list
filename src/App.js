@@ -7,10 +7,14 @@ import Edit from './components/Edit.js';
 import Login from './components/Login'
 import { UsersProvider } from './context/UsersContext';
 import PrivateRoute from './hocs/PrivateRoute'
+import { AdminsProvider } from './context/AdminsContext';
+
+import CheckContext from './components/CheckContext'
 
 function App() {
   return (
-    <UsersProvider>
+    <AdminsProvider>
+      <UsersProvider>
       <Switch>
           <PrivateRoute exact path='/'>
             <Home />
@@ -18,15 +22,18 @@ function App() {
           <PrivateRoute exact path='/users'>
             <Users />
           </PrivateRoute>
-          <PrivateRoute exact path='/users/:id'>
-            <Edit />
-          </PrivateRoute>
           <PrivateRoute exact path='/users/create'>
             <Create />
           </PrivateRoute>
+          {/* <PrivateRoute path='/users/:id'>
+            <Edit />
+          </PrivateRoute> */}
+          <Route path='/users/:id' component={Edit} />
           <Route path='/login' component={Login} />
+          <Route path='/context' component={CheckContext} />
         </Switch>
-    </UsersProvider>
+      </UsersProvider>
+    </AdminsProvider>
   );
 }
 

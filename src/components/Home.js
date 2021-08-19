@@ -14,6 +14,12 @@ const Home = () => {
         <li>
           <Link to='/users/create'>Add new user</Link>
         </li>
+        <li>
+          <Link to='/login'>Quit</Link>
+        </li>
+        <li>
+          <Link to='/context'>Context</Link>
+        </li>
       </ul>
     </div>
   );

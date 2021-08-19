@@ -4,10 +4,18 @@ import TextField from '@material-ui/core/TextField';
 import useUsersActions from '../hooks/useUsersActions'
 import { Link } from 'react-router-dom';
 
-export default function Edit( props ) {
+const Edit = ( props ) => {
   
   const {users, deleteUser, addNewUser} = useUsersActions();
-  const userToEdit = users[props.match.params.id.slice(1, props.match.params.id.length)];
+  // const userToEdit = users[props.match.params.id.slice(1, props.match.params.id.length)];
+  const userToEdit = users[222222];
+
+  console.log('Edit');
+  try {
+    console.log(props.match.params);
+  } catch (e) {
+    console.log(e);
+  }
 
   const [user, setUser] = React.useState(userToEdit);
 
@@ -35,7 +43,7 @@ export default function Edit( props ) {
   return(
     <div>
       <h3>edit user data</h3>
-      <p>ID: {props.match.params.id.slice(1,props.match.params.id.length)}</p>
+      {/* <p>ID: {props.match.params.id.slice(1,props.match.params.id.length)}</p> */}
       <TextField
           id="outlined-helperText-firstName"
           label="First Name"
@@ -69,3 +77,5 @@ export default function Edit( props ) {
     </div>
   )
 }
+
+export default Edit;
