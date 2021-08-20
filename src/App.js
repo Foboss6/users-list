@@ -5,6 +5,7 @@ import Users from './components/Users.js';
 import Create from './components/Create.js';
 import Edit from './components/Edit.js';
 import Login from './components/Login'
+import Register from './components/Register'
 import { UsersProvider } from './context/UsersContext';
 import PrivateRoute from './hocs/PrivateRoute'
 import { AdminsProvider } from './context/AdminsContext';
@@ -30,6 +31,7 @@ function App() {
           </PrivateRoute>
           {/* <Route path='/users/:id' component={Edit} /> */}
           <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
           <Route path='/context' component={CheckContext} />
         </Switch>
       </UsersProvider>

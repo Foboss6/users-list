@@ -27,7 +27,7 @@ export default function Create() {
       ...user,
     });
   }
-
+// will delete later
   useEffect(() => {
     console.log(users);
   }, [users]);
