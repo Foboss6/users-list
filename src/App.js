@@ -25,10 +25,10 @@ function App() {
           <PrivateRoute exact path='/users/create'>
             <Create />
           </PrivateRoute>
-          {/* <PrivateRoute path='/users/:id'>
+          <PrivateRoute exact path='/users/:id'>
             <Edit />
-          </PrivateRoute> */}
-          <Route path='/users/:id' component={Edit} />
+          </PrivateRoute>
+          {/* <Route path='/users/:id' component={Edit} /> */}
           <Route path='/login' component={Login} />
           <Route path='/context' component={CheckContext} />
         </Switch>
