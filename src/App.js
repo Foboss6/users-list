@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home.js'
@@ -12,7 +13,13 @@ import { AdminsProvider } from './context/AdminsContext';
 
 import CheckContext from './components/CheckContext'
 
-function App() {
+const App = () => {
+  
+  // Sign Out automaticaly when page refreshing
+  useEffect(() => {
+    localStorage.setItem('isLoggedIn', 'false');
+  })
+  
   return (
     <AdminsProvider>
       <UsersProvider>

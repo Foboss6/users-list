@@ -6,6 +6,9 @@ import useAdminsActions from '../hooks/useAdminsActions'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import { useHistory } from 'react-router';
 
 const Register = () => {
@@ -32,6 +35,8 @@ const Register = () => {
     helperTextPassConfirm: '',
   });
 
+  const [checkState, setChecState] = useState(false);
+  
   const registerId = Date.now();
 
   const emailValidation = (email) => {
@@ -64,23 +69,6 @@ const Register = () => {
   }
 
   const handleButtonClick = () => {
-    // if((admin.email !== '') && (admin.pass !== '')) {
-    //   addNewAdmin({
-    //     id: Date.now(),
-    //     ...admin,
-    //   });
-    //   console.log('Admin added to Context');
-    // }
-    // else console.log('Enter email and password');
-
-    // if((user.firstName !== '') && (user.lastName !== '') && (user.position !== '')) {
-    //   addNewUser({
-    //     id: Date.now(),
-    //     ...user,
-    //   });
-    //   console.log('User added to Context');
-    // }
-    // else console.log('Enter user data');
 
     // save admin's data to context
     if( !admin.email ) {
@@ -106,46 +94,56 @@ const Register = () => {
             helperTextPassConfirm: 'Enter confirm password',
           }));
         } else {
-          addNewAdmin({
-            id: registerId,
-            email: admin.email,
-            pass: admin.pass,
-          });
+          if(checkState) {
+            // save user's data to it's oun context to display it in the users list
+            if(user.firstName) {
+              if(user.lastName) {
+                if(user.position) {
+                  setHelperText((prevState) => ({
+                    ...prevState,
+                    helperTextLastName: '',
+                    helperTextPosition: '',
+                  }));
+      
+                  addNewUser({
+                    id: registerId,
+                    ...user,
+                  });
+
+                  addNewAdmin({
+                    id: registerId,
+                    email: admin.email,
+                    pass: admin.pass,
+                  });
+      
+                  localStorage.setItem('isLoggedIn', 'true');
+                  history.push('/');
+                } else {
+                  setHelperText((prevState) => ({
+                    ...prevState,
+                    helperTextPosition: 'Enter your Position',
+                  }));
+                }
+              } else {
+                setHelperText((prevState) => ({
+                  ...prevState,
+                  helperTextLastName: 'Enter your Last Name',
+                }));
+              }
+            }
+          } else {
+            addNewAdmin({
+              id: registerId,
+              email: admin.email,
+              pass: admin.pass,
+            });
+            
+            localStorage.setItem('isLoggedIn', 'true');
+            history.push('/');
+          }
         }
       }
-    }
-
-    // save user's data to it's oun context to display it in the users list
-    if(user.firstName) {
-      if(user.lastName) {
-        if(user.position) {
-          setHelperText((prevState) => ({
-            ...prevState,
-            helperTextLastName: '',
-            helperTextPosition: '',
-          }));
-
-          addNewUser({
-            id: registerId,
-            ...user,
-          });
-        } else {
-          setHelperText((prevState) => ({
-            ...prevState,
-            helperTextPosition: 'Enter your Position',
-          }));
-        }
-      } else {
-        setHelperText((prevState) => ({
-          ...prevState,
-          helperTextLastName: 'Enter your Last Name',
-        }));
-      }
-    }
-
-    localStorage.setItem('isLoggedIn', 'true');
-
-    history.push('/');
+    } 
   }
 
   const handleEmailBlur = (event) => {
@@ -220,6 +218,12 @@ const Register = () => {
     }
   }
 
+  const handleCheckChange = () => {
+    checkState
+      ? setChecState(false)
+      : setChecState(true)
+  }
+
   useEffect(() => {
     console.log('AdminContext:');
     console.log(admins);
@@ -268,9 +272,19 @@ const Register = () => {
         />
       </div>
       <div>
-        <p>If you want, you can add yourself to the users list</p>
+        <FormControlLabel
+        control={
+          <Checkbox
+            checked={checkState}
+            onChange={handleCheckChange}
+            name="checkedB"
+            color="primary"
+          />
+        }
+        label="Add me to the users list"
+      />
       </div>
-      <div>
+      <div style={{visibility: checkState ? 'visible' : 'hidden'}}>
       <TextField
           id="outlined-required-first-name"
           label="First Name"
