@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import useUsersActions from '../hooks/useUsersActions'
 import useAdminsActions from '../hooks/useAdminsActions'
@@ -21,7 +22,8 @@ const Register = () => {
 
   const [admin, setAdmin] = useState({
     email: '',
-    pass: ''
+    pass: '',
+    passConfirmed: false,
   });
 
   const [helperText, setHelperText] = useState({
@@ -29,6 +31,16 @@ const Register = () => {
     helperTextPass: '',
     helperTextPassConfirm: '',
   });
+
+  const registerId = Date.now();
+
+  const emailValidation = (email) => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const onUserInputChange = (event, fieldName) => {
     setUser((prevState) => ({
@@ -70,10 +82,7 @@ const Register = () => {
     // }
     // else console.log('Enter user data');
 
-    // localStorage.setItem('isLoggedIn', 'true');
-
-    // history.push('/');
-
+    // save admin's data to context
     if( !admin.email ) {
       setHelperText((prevState) => ({
         ...prevState,
@@ -86,20 +95,87 @@ const Register = () => {
           helperTextPass: 'Enter password',
         }));
       } else {
-        
-        
         setHelperText((prevState) => ({
           ...prevState,
           helperTextPass: '',
         }));
-      }
 
+        if(!admin.passConfirmed) {
+          setHelperText((prevState) => ({
+            ...prevState,
+            helperTextPassConfirm: 'Enter confirm password',
+          }));
+        } else {
+          addNewAdmin({
+            id: registerId,
+            email: admin.email,
+            pass: admin.pass,
+          });
+        }
+      }
+    }
+
+    // save user's data to it's oun context to display it in the users list
+    if(user.firstName) {
+      if(user.lastName) {
+        if(user.position) {
+          setHelperText((prevState) => ({
+            ...prevState,
+            helperTextLastName: '',
+            helperTextPosition: '',
+          }));
+
+          addNewUser({
+            id: registerId,
+            ...user,
+          });
+        } else {
+          setHelperText((prevState) => ({
+            ...prevState,
+            helperTextPosition: 'Enter your Position',
+          }));
+        }
+      } else {
+        setHelperText((prevState) => ({
+          ...prevState,
+          helperTextLastName: 'Enter your Last Name',
+        }));
+      }
+    }
+
+    localStorage.setItem('isLoggedIn', 'true');
+
+    history.push('/');
+  }
+
+  const handleEmailBlur = (event) => {
+    if(event.target.value) {
+      // if email was entered go to its validation
+      if (emailValidation(event.target.value)) {
+        //If email is valid, write it to local context and clear an error
+        setAdmin((prevState) => ({
+          ...prevState,
+          email: event.target.value,
+        }));
+        
+        setHelperText((prevState) => ({
+          ...prevState,
+          helperTextEmail: '',
+        }));
+      } else {
+        // If email is not valid go out with error
+        setHelperText((prevState) => ({
+          ...prevState,
+          helperTextEmail: 'Enter a valid email',
+        }));
+      }
+    } else {
+      // if email wasn't entered go out with error
       setHelperText((prevState) => ({
         ...prevState,
-        helperTextEmail: '',
+        helperTextEmail: 'Enter an email',
       }));
     }
- 
   }
 
   const checkPasswordConfirm = (event) => {
@@ -108,16 +184,26 @@ const Register = () => {
       if(event.target.value) { // if confirm pass field is not empty, go on
         // when bouth password are not empty, go on and check are they the same
         if(admin.pass === event.target.value) {
-          // if bouth passwords are the same, turn off errors
+          // if bouth passwords are the same, turn off errors, toggle flag about confirm pass
           setHelperText((prevState) => ({
             ...prevState,
             helperTextPass: '',
             helperTextPassConfirm: '',
           }));
+
+          setAdmin((prevState) => ({
+            ...prevState,
+            passConfirmed: true,
+          }));
         } else { //if password are not the same, go out with massage
           setHelperText((prevState) => ({
           ...prevState,
           helperTextPassConfirm: 'Passwords are not the same',
+        }));
+
+        setAdmin((prevState) => ({
+          ...prevState,
+          passConfirmed: false,
         }));
         }
       } else {        // if confirm pass field is empty, go out with message
@@ -140,7 +226,7 @@ const Register = () => {
   }, [admins]);
 
   useEffect(() => {
-    console.log('AdminContext:');
+    console.log('UsersContext:');
     console.log(users);
   }, [users]);
 
@@ -156,7 +242,8 @@ const Register = () => {
           id="outlined-required-email"
           label="Email"
           variant="outlined"
-          onChange={(ev) => onAdminInputChange(ev, 'email')}
+          // onChange={(ev) => onAdminInputChange(ev, 'email')}
+          onBlur={(ev) => handleEmailBlur(ev)}
         />
         <TextField
           id="outlined-password-input-pass"
@@ -181,24 +268,29 @@ const Register = () => {
         />
       </div>
       <div>
+        <p>If you want, you can add yourself to the users list</p>
+      </div>
+      <div>
       <TextField
-          required
           id="outlined-required-first-name"
           label="First Name"
           variant="outlined"
           onChange={(ev)=> onUserInputChange(ev, 'firstName')}
         />
       <TextField
-          required
           id="outlined-required-last-name"
           label="Last Name"
           variant="outlined"
+          error={!!helperText.helperTextLastName}
+          helperText={helperText.helperTextLastName}
           onChange={(ev)=> onUserInputChange(ev, 'lastName')}
         />
         <TextField
           id="outlined-required-position"
           label="Position"
           variant="outlined"
+          error={!!helperText.helperTextPosition}
+          helperText={helperText.helperTextPosition}
           onChange={(ev)=> onUserInputChange(ev, 'position')}
         />
       </div>
@@ -206,7 +298,7 @@ const Register = () => {
         <Button variant='contained' onClick={handleButtonClick}>Register</Button>
       </div>
       <div>
-
+        <Link to='/login'>Back to LogIn</Link>
       </div>
     </div>
   )
