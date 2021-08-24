@@ -1,21 +1,48 @@
+import { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home.js'
 import Users from './components/Users.js';
 import Create from './components/Create.js';
 import Edit from './components/Edit.js';
+import Login from './components/Login'
+import Register from './components/Register'
 import { UsersProvider } from './context/UsersContext';
+import PrivateRoute from './hocs/PrivateRoute'
+import { AdminsProvider } from './context/AdminsContext';
 
-function App() {
+import CheckContext from './components/CheckContext'
+
+const App = () => {
+  
+  // Sign Out automaticaly when page refreshing
+  useEffect(() => {
+    localStorage.setItem('isLoggedIn', 'false');
+  })
+  
   return (
-    <UsersProvider>
+    <AdminsProvider>
+      <UsersProvider>
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/users' component={Users} />
-        <Route path='/users/create' component={Create} />
-        <Route path='/users/:id' component={Edit} />
-      </Switch>
-    </UsersProvider>
+          <PrivateRoute exact path='/'>
+            <Home />
+          </PrivateRoute>
+          <PrivateRoute exact path='/users'>
+            <Users />
+          </PrivateRoute>
+          <PrivateRoute exact path='/users/create'>
+            <Create />
+          </PrivateRoute>
+          <PrivateRoute exact path='/users/:id'>
+            <Edit />
+          </PrivateRoute>
+          {/* <Route path='/users/:id' component={Edit} /> */}
+          <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
+          <Route path='/context' component={CheckContext} />
+        </Switch>
+      </UsersProvider>
+    </AdminsProvider>
   );
 }
 

@@ -211,7 +211,7 @@ const Users = (props) => {
               <TableCell align="center">{user.position}</TableCell>
               <TableCell align="right">
                 <IconButton aria-label="edit" value={user.id}>
-                  <Link to={`/users/:${user.id}`}>
+                  <Link to={`/users/${user.id}`}>
                     <EditIcon />
                   </Link>
                 </IconButton>
