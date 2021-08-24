@@ -12,7 +12,17 @@ export default function Create() {
     position: ''
   });
 
+  let inputs = [1, 2, 3];
+
   const {addNewUser, users} = useUsersActions();
+
+  const initialInputs = (input, inputNumb) => {
+    inputs[inputNumb] = input;
+  }
+
+  const clearInputs = () => {
+    inputs.forEach((input) => {input.value = '';})
+  }
   
   const onInputChange = (event, fieldName) => {
     setUser((prevUser) => ({
@@ -26,19 +36,16 @@ export default function Create() {
       id: Date.now(),
       ...user,
     });
-  }
-// will delete later
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
 
+    clearInputs('');
+  }
 
   return(
     <div>
       <h3>Add new user</h3>
-      <InputForm label='First name' onTextChange={(ev) => onInputChange(ev, 'firstName')} />
-      <InputForm label='Last name' onTextChange={(ev) => onInputChange(ev, 'lastName')} />
-      <InputForm label='Position' onTextChange={(ev) => onInputChange(ev, 'position')} />
+      <InputForm label='First name' inputRef={(ev) => initialInputs(ev, 0)} onTextChange={(ev) => onInputChange(ev, 'firstName')} />
+      <InputForm label='Last name' inputRef={(ev) => initialInputs(ev, 1)} onTextChange={(ev) => onInputChange(ev, 'lastName')} />
+      <InputForm label='Position' inputRef={(ev) => initialInputs(ev, 2)} onTextChange={(ev) => onInputChange(ev, 'position')} />
       <div>
         <Button variant="contained" onClick={handleButtonClick}>Confirm!</Button>
       </div>
