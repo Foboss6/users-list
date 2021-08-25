@@ -7,6 +7,7 @@ import Create from './components/Create.js';
 import Edit from './components/Edit.js';
 import Login from './components/Login'
 import Register from './components/Register'
+import Header from './components/Header'
 import { UsersProvider } from './context/UsersContext';
 import PrivateRoute from './hocs/PrivateRoute'
 import { AdminsProvider } from './context/AdminsContext';
@@ -23,6 +24,7 @@ const App = () => {
   return (
     <AdminsProvider>
       <UsersProvider>
+      <Header />
       <Switch>
           <PrivateRoute exact path='/'>
             <Home />

@@ -6,13 +6,15 @@ import useAdminsActions from '../hooks/useAdminsActions';
 
 const Login = () => {
 
-  const { admins } = useAdminsActions();
+  const { admins, addNewAdmin, deleteAdmin } = useAdminsActions();
 
   const [loginData = {}, setLoginData] = useState();
 
   const history = useHistory();
 
+  // LOGOUT automaticaly
   localStorage.setItem('isLoggedIn', 'false');
+  if(admins.CurrentAdmin) deleteAdmin('CurrentAdmin');
 
   const onInputChange = (event, fieldName) => {
     setLoginData((prevState) => ({
@@ -24,13 +26,18 @@ const Login = () => {
   const handleButtonClick = () => {
     if(loginData.email && loginData.pass) {
       const adminsList = Object.values(admins);
-      if(adminsList.some(admin => (admin.email === loginData.email && admin.pass === loginData.pass))) {
-        console.log('you logged in');
+      const currentAdmin = adminsList.find((admin) => (admin.email === loginData.email && admin.pass === loginData.pass));
+      console.log(currentAdmin);
+
+      if(currentAdmin) {
+        addNewAdmin({
+          ...currentAdmin,
+          id: 'CurrentAdmin',
+          currentId: currentAdmin.id,
+        });
+
         localStorage.setItem('isLoggedIn', 'true');
         history.push('/');
-      }
-      else {
-        console.log('wrong email or password!');
       }
     }
   }
