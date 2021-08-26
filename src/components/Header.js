@@ -21,6 +21,7 @@ import PeopleIcon from '@material-ui/icons/People';
 
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import useUsersActions from '../hooks/useUsersActions';
 
 // for navigation bar
 const useStyles = makeStyles((theme) => ({
@@ -124,6 +125,20 @@ const Header = () => {
     }
   }
   // ************************************
+  // for search *************************
+  const { addNewUser, deleteUser } = useUsersActions();
+  
+  const handleSearchInputChange = (event) => {    
+    if(event.target.value) {
+      addNewUser({
+        id: 'search',
+        name: event.target.value,
+      });
+    } else {
+      deleteUser('search');
+    }
+  }
+  // ************************************
 
   const classes = useStyles();
 
@@ -214,7 +229,7 @@ const Header = () => {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
-                onChange={(ev) => {console.log(ev.target.value)}}
+                onChange={(ev) => {handleSearchInputChange(ev)}}
               />
             </div>
             :

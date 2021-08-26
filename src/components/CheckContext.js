@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useAdminsActions from '../hooks/useAdminsActions';
+import useUsersActions from '../hooks/useUsersActions';
 
 const CheckContext = () => {
 
@@ -9,6 +10,12 @@ const CheckContext = () => {
   useEffect(()=>{
     console.log(admins);
   }, [admins]);
+
+  const { users } = useUsersActions();
+
+  useEffect(()=>{
+    console.log(users);
+  }, [users]);
 
   // console.log('Admins from localStorage:');
   // console.log(localStorage.getItem('admins'));
