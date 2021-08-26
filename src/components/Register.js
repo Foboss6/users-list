@@ -39,13 +39,11 @@ const Register = () => {
   
   const registerId = Date.now();
 
-  const emailValidation = (email) => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  const emailValidation = (email) => (
+    /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/.test(email)
+    ? true
+    : false
+  );
 
   const onUserInputChange = (event, fieldName) => {
     setUser((prevState) => ({
