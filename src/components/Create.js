@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+
 import Button from '@material-ui/core/Button';
+
 import InputForm from './InputForm.js';
 import useUsersActions from '../hooks/useUsersActions'
-import { Link } from 'react-router-dom';
 
 
 export default function Create() {
@@ -14,8 +15,6 @@ export default function Create() {
 
   let inputs = [1, 2, 3];
 
-  const {addNewUser} = useUsersActions();
-
   const initialInputs = (input, inputNumb) => {
     inputs[inputNumb] = input;
   }
@@ -23,6 +22,10 @@ export default function Create() {
   const clearInputs = () => {
     inputs.forEach((input) => {input.value = '';})
   }
+
+  const {addNewUser} = useUsersActions();
+
+  const [isDataValid, setDataValid] = useState(true);
   
   const onInputChange = (event, fieldName) => {
     setUser((prevUser) => ({
@@ -32,25 +35,29 @@ export default function Create() {
   }
 
   const handleButtonClick = () => {
-    addNewUser({
-      id: Date.now(),
-      ...user,
-    });
+    if(user && user.firstName && user.lastName && user.position) {
+      addNewUser({
+        id: Date.now(),
+        ...user,
+      });
+  
+      clearInputs('');
 
-    clearInputs('');
+      setDataValid(true);
+    } else setDataValid(false);
   }
 
   return(
     <div>
       <h3>Add new user</h3>
-      <InputForm label='First name' inputRef={(ev) => initialInputs(ev, 0)} onTextChange={(ev) => onInputChange(ev, 'firstName')} />
-      <InputForm label='Last name' inputRef={(ev) => initialInputs(ev, 1)} onTextChange={(ev) => onInputChange(ev, 'lastName')} />
-      <InputForm label='Position' inputRef={(ev) => initialInputs(ev, 2)} onTextChange={(ev) => onInputChange(ev, 'position')} />
+      <div>
+        <InputForm label='First name' inputRef={(ev) => initialInputs(ev, 0)} onTextChange={(ev) => onInputChange(ev, 'firstName')} />
+        <InputForm label='Last name' inputRef={(ev) => initialInputs(ev, 1)} onTextChange={(ev) => onInputChange(ev, 'lastName')} />
+        <InputForm label='Position' inputRef={(ev) => initialInputs(ev, 2)} onTextChange={(ev) => onInputChange(ev, 'position')} />
+      </div>
+        {!isDataValid ? <p>Enter valid User's Data</p> : <></>}
       <div>
         <Button variant="contained" onClick={handleButtonClick}>Confirm!</Button>
-      </div>
-      <div>
-        <Link to='/'>Go Home</Link>
       </div>
     </div>
   )

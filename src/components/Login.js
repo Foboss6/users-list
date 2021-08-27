@@ -13,7 +13,6 @@ const Login = () => {
   const history = useHistory();
 
   // LOGOUT automaticaly
-  localStorage.setItem('isLoggedIn', 'false');
   if(admins.CurrentAdmin) deleteAdmin('CurrentAdmin');
 
   const onInputChange = (event, fieldName) => {
@@ -27,7 +26,6 @@ const Login = () => {
     if(loginData.email && loginData.pass) {
       const adminsList = Object.values(admins);
       const currentAdmin = adminsList.find((admin) => (admin.email === loginData.email && admin.pass === loginData.pass));
-      console.log(currentAdmin);
 
       if(currentAdmin) {
         addNewAdmin({
@@ -36,7 +34,6 @@ const Login = () => {
           currentId: currentAdmin.id,
         });
 
-        localStorage.setItem('isLoggedIn', 'true');
         history.push('/');
       }
     }
@@ -66,11 +63,6 @@ const Login = () => {
       <div>
         <Button variant="contained" onClick={handleButtonClick}>
           Enter
-        </Button>
-      </div>
-      <div>
-        <Button variant="contained">
-          <Link style={{textDecoration: 'none', color: 'default'}} to='/context'>Check Context</Link>
         </Button>
       </div>
       <div>

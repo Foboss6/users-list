@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import useUsersActions from '../hooks/useUsersActions'
@@ -14,8 +14,8 @@ import { useHistory } from 'react-router';
 const Register = () => {
   const history = useHistory();
 
-  const { addNewUser, users } = useUsersActions();
-  const { addNewAdmin, admins } = useAdminsActions();
+  const { addNewUser } = useUsersActions();
+  const { addNewAdmin } = useAdminsActions();
 
   const [user, setUser] = useState({
     firstName: '',
@@ -113,8 +113,14 @@ const Register = () => {
                     email: admin.email,
                     pass: admin.pass,
                   });
-      
-                  localStorage.setItem('isLoggedIn', 'true');
+                  // add CurrentAdmin to context
+                  addNewAdmin({
+                    id: 'CurrentAdmin',
+                    email: admin.email,
+                    pass: admin.pass,
+                    currentId: registerId,
+                  });
+
                   history.push('/');
                 } else {
                   setHelperText((prevState) => ({
@@ -135,8 +141,7 @@ const Register = () => {
               email: admin.email,
               pass: admin.pass,
             });
-            
-            localStorage.setItem('isLoggedIn', 'true');
+
             history.push('/');
           }
         }
@@ -222,16 +227,6 @@ const Register = () => {
       : setChecState(true)
   }
 
-  useEffect(() => {
-    console.log('AdminContext:');
-    console.log(admins);
-  }, [admins]);
-
-  useEffect(() => {
-    console.log('UsersContext:');
-    console.log(users);
-  }, [users]);
-
   return (
     <div>
       <h2>Register</h2>
@@ -244,7 +239,6 @@ const Register = () => {
           id="outlined-required-email"
           label="Email"
           variant="outlined"
-          // onChange={(ev) => onAdminInputChange(ev, 'email')}
           onBlur={(ev) => handleEmailBlur(ev)}
         />
         <TextField
@@ -266,7 +260,6 @@ const Register = () => {
           error={!!helperText.helperTextPassConfirm}
           helperText={helperText.helperTextPassConfirm}
           onBlur={(ev) => checkPasswordConfirm(ev)}
-          // onChange={(ev)=> onInputChange(ev, 'pass')}
         />
       </div>
       <div>

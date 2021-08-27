@@ -120,7 +120,6 @@ const Header = () => {
   const handleMenuItemClick = (path) => {
     if(path) {
       setAnchorEl(null);
-      console.log(path);
       history.push(path);
     }
   }

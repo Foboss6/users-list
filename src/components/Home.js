@@ -17,9 +17,6 @@ const Home = () => {
         <li>
           <Link to='/login'>Quit</Link>
         </li>
-        <li>
-          <Link to='/context'>Context</Link>
-        </li>
       </ul>
     </div>
   );

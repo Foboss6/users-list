@@ -109,12 +109,10 @@ const Users = (props) => {
   }, [sortingBy, arrayUsers]);
 
   const handleDeleteButtonClick = (event) => {
-    console.log('Deleted ID:' + event.currentTarget.value);
     deleteUser(event.currentTarget.value);
   }
 
   React.useEffect(()=>{
-    console.log(users);
     if(users.search) {
       setArrayUsers(Object.values(users).filter(user => (
         user.firstName 
@@ -223,13 +221,6 @@ const Users = (props) => {
         </TableBody>
       </Table>
     </Paper>
-    <br/>
-    <div>
-      <Link to='/users/create'>Add new User</Link>
-    </div>
-    <div>
-      <Link to='/'>Go home</Link>
-    </div>
     </>
   );
 }

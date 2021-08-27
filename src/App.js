@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
+
 import './App.css';
+
 import Home from './components/Home.js'
 import Users from './components/Users.js';
 import Create from './components/Create.js';
@@ -8,18 +9,13 @@ import Edit from './components/Edit.js';
 import Login from './components/Login'
 import Register from './components/Register'
 import Header from './components/Header'
-import { UsersProvider } from './context/UsersContext';
+
 import PrivateRoute from './hocs/PrivateRoute'
+
+import { UsersProvider } from './context/UsersContext';
 import { AdminsProvider } from './context/AdminsContext';
 
-import CheckContext from './components/CheckContext'
-
 const App = () => {
-  
-  // Sign Out automaticaly when page refreshing
-  useEffect(() => {
-    localStorage.setItem('isLoggedIn', 'false');
-  })
   
   return (
     <AdminsProvider>
@@ -38,10 +34,8 @@ const App = () => {
           <PrivateRoute exact path='/users/:id'>
             <Edit />
           </PrivateRoute>
-          {/* <Route path='/users/:id' component={Edit} /> */}
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
-          <Route path='/context' component={CheckContext} />
         </Switch>
       </UsersProvider>
     </AdminsProvider>
