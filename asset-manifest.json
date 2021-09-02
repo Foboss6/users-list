@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/Foboss6/users-list/static/css/main.40ce94f3.chunk.css",
+    "main.js": "/Foboss6/users-list/static/js/main.dbb42e95.chunk.js",
+    "main.js.map": "/Foboss6/users-list/static/js/main.dbb42e95.chunk.js.map",
+    "runtime-main.js": "/Foboss6/users-list/static/js/runtime-main.fa05bc60.js",
+    "runtime-main.js.map": "/Foboss6/users-list/static/js/runtime-main.fa05bc60.js.map",
+    "static/js/2.8ad0e3f9.chunk.js": "/Foboss6/users-list/static/js/2.8ad0e3f9.chunk.js",
+    "static/js/2.8ad0e3f9.chunk.js.map": "/Foboss6/users-list/static/js/2.8ad0e3f9.chunk.js.map",
+    "index.html": "/Foboss6/users-list/index.html",
+    "static/css/main.40ce94f3.chunk.css.map": "/Foboss6/users-list/static/css/main.40ce94f3.chunk.css.map",
+    "static/js/2.8ad0e3f9.chunk.js.LICENSE.txt": "/Foboss6/users-list/static/js/2.8ad0e3f9.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/Foboss6/users-list/static/media/background.951b21e1.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.fa05bc60.js",
+    "static/js/2.8ad0e3f9.chunk.js",
+    "static/css/main.40ce94f3.chunk.css",
+    "static/js/main.dbb42e95.chunk.js"
+  ]
+}
