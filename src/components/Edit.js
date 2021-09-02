@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import useUsersActions from '../hooks/useUsersActions'
-import { Link } from 'react-router-dom';
 
-export default function Edit( props ) {
+import useUsersActions from '../hooks/useUsersActions'
+
+const Edit = () => {
+  
+  const history = useHistory();
+  const location = useLocation();
   
   const {users, deleteUser, addNewUser} = useUsersActions();
-  const userToEdit = users[props.match.params.id.slice(1, props.match.params.id.length)];
 
-  const [user, setUser] = React.useState(userToEdit);
+  //take user ID from pathname
+  const splittedPathname = location.pathname.split('/');
+  const userToEditId = splittedPathname[splittedPathname.length - 1];
+
+  const [user, setUser] = React.useState(users[userToEditId]);
 
   const onInputChange = (event, fieldName) => {
     setUser((prevUser) => ({
@@ -25,17 +33,13 @@ export default function Edit( props ) {
       id: user,
       ...user,
     });
-    console.log(user);
-  }
 
-  useEffect(()=>{
-    console.log(users);
-  }, [users]);
+    history.push('/users');
+  }
   
   return(
     <div>
-      <h3>edit user data</h3>
-      <p>ID: {props.match.params.id.slice(1,props.match.params.id.length)}</p>
+      <h3>Edit {user.firstName}'s data</h3>
       <TextField
           id="outlined-helperText-firstName"
           label="First Name"
@@ -57,15 +61,9 @@ export default function Edit( props ) {
           variant="outlined"
           onChange={(ev) => onInputChange(ev, 'position')}
         />
-      <div>
-        <Button variant="contained" onClick={handleButtonClick}>Save</Button>
-      </div>
-      <div>
-        <Link to='/'>Go Home</Link>
-      </div>
-      <div>
-        <Link to='/users'>To Users list</Link>
-      </div>
+        <Button style={{height: '55px'}} variant="contained" onClick={handleButtonClick}>Save</Button>
     </div>
   )
 }
+
+export default Edit;

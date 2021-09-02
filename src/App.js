@@ -1,21 +1,42 @@
 import { Switch, Route } from 'react-router-dom';
+
 import './App.css';
+
 import Home from './components/Home.js'
 import Users from './components/Users.js';
 import Create from './components/Create.js';
 import Edit from './components/Edit.js';
-import { UsersProvider } from './context/UsersContext';
+import Login from './components/Login'
+import Header from './components/Header'
 
-function App() {
+import PrivateRoute from './hocs/PrivateRoute'
+
+import { UsersProvider } from './context/UsersContext';
+import { AdminsProvider } from './context/AdminsContext';
+
+const App = () => {
+  
   return (
-    <UsersProvider>
+    <AdminsProvider>
+      <UsersProvider>
+      <Header />
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/users' component={Users} />
-        <Route path='/users/create' component={Create} />
-        <Route path='/users/:id' component={Edit} />
-      </Switch>
-    </UsersProvider>
+          <PrivateRoute exact path='/'>
+            <Home />
+          </PrivateRoute>
+          <PrivateRoute exact path='/users'>
+            <Users />
+          </PrivateRoute>
+          <PrivateRoute exact path='/users/create'>
+            <Create />
+          </PrivateRoute>
+          <PrivateRoute exact path='/users/:id'>
+            <Edit />
+          </PrivateRoute>
+          <Route path='/login' component={Login} />
+        </Switch>
+      </UsersProvider>
+    </AdminsProvider>
   );
 }
 

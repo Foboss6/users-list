@@ -2,7 +2,7 @@ import { useCallback, useContext } from "react";
 import { UsersContext } from "../context/UsersContext";
 
 const useUsersActions = () => {
-  const { context, setContext} = useContext(UsersContext);
+  const { context, setContext } = useContext(UsersContext);
 
   const addNewUser = useCallback((newUser) => {
     setContext((prevState) => {
@@ -25,24 +25,6 @@ const useUsersActions = () => {
       return {
         ...prevState,
         users,
-      }
-    });
-  }, [setContext]);
-
-  // const deleteUser = (key) => {
-  //   delete context.users[key];
-  //   console.log(context.users[key]);
-  // }
-
-  const editUser = useCallback((key, user) => {
-    setContext((prevState) => {
-      delete prevState.users[user.id];
-      return {
-        ...prevState,
-        users: {
-          ...prevState.users,
-          [user.id]: user,
-        }
       }
     });
   }, [setContext]);
