@@ -1,9 +1,11 @@
 import React from 'react';
 import { Redirect, Route} from 'react-router-dom';
+import useAdminsActions from '../hooks/useAdminsActions';
 
 const PrivateRoute = ({ children, ...props }) => {
   
-  const isLoggedIn = (localStorage.getItem('isLoggedIn') === 'true') ? true : false;
+  const {admins} = useAdminsActions();
+  const isLoggedIn = admins.CurrentAdmin ? true : false;
 
   return (
     <Route
@@ -14,23 +16,6 @@ const PrivateRoute = ({ children, ...props }) => {
         : <Redirect to='/login' />
       )}
     />
-    // <Route
-    //   {...props}
-    //   render={({location}) => {
-    //     console.log('Location:');
-    //     console.log(location);
-
-    //     if(isLoggedIn) {
-    //       return (
-    //         children
-    //       );
-    //     }
-
-    //     return (
-    //       <Redirect to='/login' />
-    //     )
-    //   }}
-    // />
   )
 }
 

@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+
 import useUsersActions from '../hooks/useUsersActions'
-import { Link, useHistory } from 'react-router-dom';
 
 const Edit = () => {
   
@@ -28,19 +30,13 @@ const Edit = () => {
       id: user,
       ...user,
     });
-    console.log(user);
 
     history.push('/users');
   }
-
-  useEffect(()=>{
-    console.log(users);
-  }, [users]);
   
   return(
     <div>
-      <h3>edit user data</h3>
-      <p>ID: {userToEditId}</p>
+      <h3>Edit {user.firstName}'s data</h3>
       <TextField
           id="outlined-helperText-firstName"
           label="First Name"
@@ -62,15 +58,7 @@ const Edit = () => {
           variant="outlined"
           onChange={(ev) => onInputChange(ev, 'position')}
         />
-      <div>
-        <Button variant="contained" onClick={handleButtonClick}>Save</Button>
-      </div>
-      <div>
-        <Link to='/'>Go Home</Link>
-      </div>
-      <div>
-        <Link to='/users'>To Users list</Link>
-      </div>
+        <Button style={{height: '55px'}} variant="contained" onClick={handleButtonClick}>Save</Button>
     </div>
   )
 }
