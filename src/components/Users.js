@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -37,6 +37,7 @@ const styles = theme => ({
 
 const Users = (props) => {
   const { classes } = props;
+  const history = useHistory();
 
   const sortByFirstNameUp = 'sort-by-first-name-up';
   const sortByFirstNameDown = 'sort-by-first-name-down';
@@ -115,6 +116,10 @@ const Users = (props) => {
 
   const handleDeleteButtonClick = (event) => {
     deleteUser(event.currentTarget.value);
+  }
+
+  const handleEditButtonClick = (event) => {
+    history.push(`/users/${event.currentTarget.value}`);
   }
 
   React.useEffect(()=>{
@@ -212,10 +217,11 @@ const Users = (props) => {
               <TableCell className={classes.body} align="center">{user.lastName}</TableCell>
               <TableCell className={classes.body} align="center">{user.position}</TableCell>
               <TableCell align="right">
-                <IconButton aria-label="edit" value={user.id}>
-                  <Link to={`/users/${user.id}`}>
+                <IconButton aria-label="edit" value={user.id} onClick={handleEditButtonClick}>
+                  {/* <Link to={`/users/${user.id}`}>
                     <EditIcon />
-                  </Link>
+                  </Link> */}
+                  <EditIcon />
                 </IconButton>
                 <IconButton aria-label="delete" value={user.id} onClick={handleDeleteButtonClick}>
                   <DeleteIcon />
