@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,10 +9,13 @@ import useUsersActions from '../hooks/useUsersActions'
 const Edit = () => {
   
   const history = useHistory();
+  const location = useLocation();
   
   const {users, deleteUser, addNewUser} = useUsersActions();
 
-  const userToEditId = window.location.pathname.slice(7); //cut off '/users/' from pathname
+  //take user ID from pathname
+  const splittedPathname = location.pathname.split('/');
+  const userToEditId = splittedPathname[splittedPathname.length - 1];
 
   const [user, setUser] = React.useState(users[userToEditId]);
 
