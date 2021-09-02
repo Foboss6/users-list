@@ -7,7 +7,6 @@ import Users from './components/Users.js';
 import Create from './components/Create.js';
 import Edit from './components/Edit.js';
 import Login from './components/Login'
-import Register from './components/Register'
 import Header from './components/Header'
 
 import PrivateRoute from './hocs/PrivateRoute'
@@ -35,7 +34,6 @@ const App = () => {
             <Edit />
           </PrivateRoute>
           <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
         </Switch>
       </UsersProvider>
     </AdminsProvider>

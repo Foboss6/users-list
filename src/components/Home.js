@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <div>
+      <h4>You can go to:</h4>
       <ul>
         <li>
-          <Link to='/'>Home page</Link>
-        </li>
-        <li>
-          <Link to='/users'>Users</Link>
+          <Link to='/users'>Users List</Link>
         </li>
         <li>
           <Link to='/users/create'>Add new user</Link>

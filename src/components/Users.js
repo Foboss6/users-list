@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import PropTypes from 'prop-types';
-
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -22,12 +20,19 @@ import useUsersActions from '../hooks/useUsersActions';
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit,
     overflowX: 'auto',
+    backgroundColor: 'transparent',
   },
   table: {
     minWidth: 700,
   },
+  head: {
+    fontSize: 20,
+  },
+  body: {
+    fontSize: 16,
+  }
 });
 
 const Users = (props) => {
@@ -128,7 +133,7 @@ const Users = (props) => {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell align="center">
+            <TableCell className={classes.head} align="center">
               <span>First Name</span>
               <IconButton 
                 aria-label="sort" 
@@ -151,7 +156,7 @@ const Users = (props) => {
                 <ArrowDownwardIcon fontSize="inherit" />
               </IconButton>
             </TableCell>
-            <TableCell align="center">
+            <TableCell className={classes.head} align="center">
               <span>Last Name</span>
               <IconButton 
                 aria-label="sort" 
@@ -174,7 +179,7 @@ const Users = (props) => {
                 <ArrowDownwardIcon fontSize="inherit" />
               </IconButton>
             </TableCell>
-            <TableCell align="center">
+            <TableCell className={classes.head} align="center">
               <span>Position</span>
               <IconButton 
                 aria-label="sort" 
@@ -203,9 +208,9 @@ const Users = (props) => {
         <TableBody>
           {sortedUsers.map((user) => (
             <TableRow key={user.id}>
-              <TableCell align="center">{user.firstName}</TableCell>
-              <TableCell align="center">{user.lastName}</TableCell>
-              <TableCell align="center">{user.position}</TableCell>
+              <TableCell className={classes.body} align="center">{user.firstName}</TableCell>
+              <TableCell className={classes.body} align="center">{user.lastName}</TableCell>
+              <TableCell className={classes.body} align="center">{user.position}</TableCell>
               <TableCell align="right">
                 <IconButton aria-label="edit" value={user.id}>
                   <Link to={`/users/${user.id}`}>
@@ -224,9 +229,5 @@ const Users = (props) => {
     </>
   );
 }
-
-Users.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(Users);

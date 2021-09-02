@@ -27,6 +27,7 @@ import useUsersActions from '../hooks/useUsersActions';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    backgroundColor: theme.palette.success.light,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -97,7 +98,7 @@ const StyledMenu = withStyles({
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     '&:focus': {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.success.light,
       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
         color: theme.palette.common.white,
       },
