@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import InputForm from './InputForm.js';
 import useUsersActions from '../hooks/useUsersActions'
@@ -14,7 +14,7 @@ export default function Create() {
 
   let inputs = [1, 2, 3];
 
-  const {addNewUser, users} = useUsersActions();
+  const {addNewUser} = useUsersActions();
 
   const initialInputs = (input, inputNumb) => {
     inputs[inputNumb] = input;

@@ -16,9 +16,23 @@ const useAdminsActions = () => {
     });
   }, [setContext]);
 
+  const deleteAdmin = useCallback((key) => {
+    setContext((prevState)=>{
+      const admins = { ...prevState.admins };
+
+      delete admins[key];
+      
+      return {
+        ...prevState,
+        admins,
+      }
+    });
+  }, [setContext]);
+
   return {
     ...context,
     addNewAdmin,
+    deleteAdmin,
   };
 }
 

@@ -59,71 +59,70 @@ const Users = (props) => {
 
   const [sortingBy, setSortingBy] = useState(sortByFirstNameUp);
 
+  const [arrayUsers, setArrayUsers] = useState(Object.values(users));
+
+  const sortingArray = (array, direction, fieldName) => {
+    array.sort((a, b) => {
+      if(direction === 'up') {
+        if(a[fieldName].toLowerCase() > b[fieldName].toLowerCase()) return 1;
+        if(a[fieldName].toLowerCase() < b[fieldName].toLowerCase()) return -1;
+        return 0;
+      } else {
+        if(a[fieldName].toLowerCase() < b[fieldName].toLowerCase()) return 1;
+        if(a[fieldName].toLowerCase() > b[fieldName].toLowerCase()) return -1;
+        return 0;
+      }
+    });
+    return array;
+  }
+  
   const sortedUsers = useMemo(() => {
     setDefaultColor(sortButtonColor);
+
     switch(sortingBy) {
       case sortByFirstNameUp : 
         sortButtonColor.sortByFirstNameUp='primary';
-        return (
-          Object.values(users).sort((a, b) => {
-            if(a.firstName > b.firstName) return 1;
-            if(a.firstName < b.firstName) return -1;
-            return 0;
-          })
-        );
+        return sortingArray(arrayUsers, 'up', 'firstName');
+
       case sortByFirstNameDown :
         sortButtonColor.sortByFirstNameDown='primary';
-        return (
-          Object.values(users).sort((a, b) => {
-            if(a.firstName < b.firstName) return 1;
-            if(a.firstName > b.firstName) return -1;
-            return 0;
-          })
-        );
+        return sortingArray(arrayUsers, 'down', 'firstName');
+
       case sortByLastNameUp :
         sortButtonColor.sortByLastNameUp='primary';
-        return (
-          Object.values(users).sort((a, b) => {
-            if(a.lastName > b.lastName) return 1;
-            if(a.lastName < b.lastName) return -1;
-            return 0;
-          })
-        );
+        return sortingArray(arrayUsers, 'up', 'lastName');
+
       case sortByLastNameDown :
         sortButtonColor.sortByLastNameDown='primary';
-        return (
-          Object.values(users).sort((a, b) => {
-            if(a.lastName < b.lastName) return 1;
-            if(a.lastName > b.lastName) return -1;
-            return 0;
-          })
-        );
+        return sortingArray(arrayUsers, 'down', 'lastName');
+
         case sortByPositionUp :
           sortButtonColor.sortByPositionUp='primary';
-          return (
-            Object.values(users).sort((a, b) => {
-              if(a.position > b.position) return 1;
-              if(a.position < b.position) return -1;
-              return 0;
-            })
-          );
+          return sortingArray(arrayUsers, 'up', 'position');
+
       case sortByPositionDown :
         sortButtonColor.sortByPositionDown='primary';
-        return (
-          Object.values(users).sort((a, b) => {
-            if(a.position < b.position) return 1;
-            if(a.position > b.position) return -1;
-            return 0;
-          })
-        );
-        default : return Object.values(users);
+        return sortingArray(arrayUsers, 'down', 'position');
+
+      default : return arrayUsers;
     }
-  }, [sortingBy, users]);
+  }, [sortingBy, arrayUsers]);
 
   const handleDeleteButtonClick = (event) => {
     console.log('Deleted ID:' + event.currentTarget.value);
     deleteUser(event.currentTarget.value);
   }
+
+  React.useEffect(()=>{
+    console.log(users);
+    if(users.search) {
+      setArrayUsers(Object.values(users).filter(user => (
+        user.firstName 
+          ? user.firstName.toLowerCase().includes(users.search.name.toLowerCase()) || 
+            user.lastName.toLowerCase().includes(users.search.name.toLowerCase())
+          : false)));
+    } else setArrayUsers(Object.values(users));
+  }, [users]);
 
   return (
     <>

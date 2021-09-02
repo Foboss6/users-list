@@ -1,10 +1,12 @@
-import React, { useEffect, useLocation } from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import useUsersActions from '../hooks/useUsersActions'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const Edit = () => {
+  
+  const history = useHistory();
   
   const {users, deleteUser, addNewUser} = useUsersActions();
 
@@ -27,6 +29,8 @@ const Edit = () => {
       ...user,
     });
     console.log(user);
+
+    history.push('/users');
   }
 
   useEffect(()=>{
