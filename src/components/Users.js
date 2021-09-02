@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -13,6 +13,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 import useUsersActions from '../hooks/useUsersActions';
 
@@ -32,7 +34,14 @@ const styles = theme => ({
   },
   body: {
     fontSize: 16,
-  }
+  },
+  floatingButton: {
+    position: 'fixed',
+    top: 'auto',
+    right: '10%',
+    bottom: '2%',
+    left: 'auto',
+  },
 });
 
 const Users = (props) => {
@@ -121,6 +130,10 @@ const Users = (props) => {
   const handleEditButtonClick = (event) => {
     history.push(`/users/${event.currentTarget.value}`);
   }
+
+  const handleFloatButtonClick = () => {
+    history.push(`/users/create`);
+  } 
 
   React.useEffect(()=>{
     if(users.search) {
@@ -218,9 +231,6 @@ const Users = (props) => {
               <TableCell className={classes.body} align="center">{user.position}</TableCell>
               <TableCell align="right">
                 <IconButton aria-label="edit" value={user.id} onClick={handleEditButtonClick}>
-                  {/* <Link to={`/users/${user.id}`}>
-                    <EditIcon />
-                  </Link> */}
                   <EditIcon />
                 </IconButton>
                 <IconButton aria-label="delete" value={user.id} onClick={handleDeleteButtonClick}>
@@ -232,6 +242,11 @@ const Users = (props) => {
         </TableBody>
       </Table>
     </Paper>
+    <div className={classes.floatingButton}>
+      <Fab color="primary" aria-label="add" onClick={handleFloatButtonClick}>
+        <AddIcon />
+      </Fab>
+    </div>
     </>
   );
 }

@@ -4,9 +4,12 @@ import Button from '@material-ui/core/Button';
 
 import InputForm from './InputForm.js';
 import useUsersActions from '../hooks/useUsersActions'
+import { useHistory } from 'react-router';
 
 
 export default function Create() {
+  const history = useHistory();
+  
   const [user, setUser] = useState({
     firstName: '',
     lastName: '',
@@ -44,6 +47,8 @@ export default function Create() {
       clearInputs('');
 
       setDataValid(true);
+
+      history.push('/users')
     } else setDataValid(false);
   }
 
@@ -57,7 +62,7 @@ export default function Create() {
       </div>
         {!isDataValid ? <p>Enter valid User's Data</p> : <></>}
       <div>
-        <Button variant="contained" onClick={handleButtonClick}>Confirm!</Button>
+        <Button variant="contained" onClick={handleButtonClick}>SAVE</Button>
       </div>
     </div>
   )
