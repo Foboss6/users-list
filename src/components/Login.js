@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
   input: {
     width: '60%',
-  }
+  },
 });
 
 const Login = () => {
@@ -44,10 +44,6 @@ const Login = () => {
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  React.useEffect(()=>{
-    console.log(value);
-  }, [value]);
   // **********************************************
 
   // ******** For BOTH tabs ************************************
@@ -155,7 +151,7 @@ const Login = () => {
     passConfirmed: false,
   });
 
-  const [checkState, setChecState] = useState(false);
+  const [checkState, setChecState] = useState(true);
   
   const registerId = Date.now();
 
@@ -314,7 +310,7 @@ const Login = () => {
 
   return (
     <section style={{textAlign: 'center'}}>
-      <div style={{margin: '0 auto', display: 'table', width: '40%'}}>
+      <div id='tabs-container' style={{margin: '0 auto', display: 'table', width: '40%'}}>
         <Paper className={classes.paperRoot}>
           <Tabs
             value={value}
@@ -391,7 +387,7 @@ const Login = () => {
                 id="outlined-password-input-pass"
                 label="Password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 variant="outlined"
                 margin='normal'
                 error={!!helperText.helperTextPass}
@@ -402,7 +398,7 @@ const Login = () => {
                 id="outlined-password-input-pass-confirm"
                 label="Confirm password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 variant="outlined"
                 margin='normal'
                 error={!!helperText.helperTextPassConfirm}
